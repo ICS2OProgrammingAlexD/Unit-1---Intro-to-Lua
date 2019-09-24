@@ -18,7 +18,7 @@ display.setDefault ("background", 217/255, 238/255, 236/255)
 local textObject
 
 --make the text object display my name
-textObject = display.newText ("Hello Alex!", display.contentWidth/2, display.contentHeight/2, "Above The Sky", 50)
+textObject = display.newText ("Hello Alex!", display.contentWidth/2, display.contentHeight/2, "Times New Roman", 50)
 
 --change the text color
 textObject:setTextColor (60/255, 111/255, 156/255)
