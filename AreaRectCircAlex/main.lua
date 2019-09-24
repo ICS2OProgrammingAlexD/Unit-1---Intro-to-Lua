@@ -91,3 +91,7 @@ circleAreaText.AnchorX = 0
 circleAreaText.AnchorY = 0
 circleAreaText.x = 450
 circleAreaText.y = 700
+
+
+
+
