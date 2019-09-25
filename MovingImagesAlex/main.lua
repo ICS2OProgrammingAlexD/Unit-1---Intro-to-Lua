@@ -7,7 +7,7 @@
 display.setStatusBar (display.HiddenStatusBar)
 
 -- Global Variables
-scrollSpeed = 3
+scrollSpeed = 6
 
 -- First Character
 -- background Image with width and height
@@ -41,7 +41,7 @@ Runtime:addEventListener ("enterFrame", MoveShip)
 -- Second character
 
 -- Make new global variable
-scrollSpeed2 =  8
+scrollSpeed2 =  15
 
 -- second character image. Change the image at school
 local f1 = display.newImageRect ("Images/f1.png", 200, 100)
