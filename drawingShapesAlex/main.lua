@@ -65,4 +65,33 @@ trapezoid.fill =  {type="image", filename="Images/beachFill.png"}
 
 -------------------------- Pentagon -----------------------------
 
+-- create local "pentagon vars"
+local pentagon
+local pentagonText 
+local pentagonVertices = {50,50, -50,50, -100,-50, -0,-150, 100,-50}
+local pentagonX = 130
+local pentagonY = 530
+local paint = {
+	type="gradient",
+	color1 = {255/255, 102/255, 255/255},
+	color2 = {178/255, 102/255, 255/255},
+	direction="down"
+}
+-- draw the pentagon
+pentagon = display.newPolygon (pentagonX, pentagonY, pentagonVertices)
+
+--make border
+pentagon.strokeWidth = 10
+
+-- make border colour
+pentagon:setStrokeColor (0, 0, 0)
+
+-- Make the fill gradient 
+pentagon.fill = paint
+
+-- write pentagon on-screen
+pentagonText = display.newText ("Pentagon", 130, 655, Arial, 40 )
+
+-- Change the text color 
+pentagonText:setTextColor (60/255, 112/255, 164/255)
 -------------------------- Hexagon ------------------------------
