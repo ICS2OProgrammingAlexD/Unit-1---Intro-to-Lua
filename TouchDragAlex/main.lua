@@ -6,7 +6,7 @@
 -- hide the status bar
 display.setStatusBar (display.HiddenStatusBar)
 
--- local variables. 
+-- local variables.
 local backgroundImage
 local rocketship = display.newImageRect ("Images/rocketship.png", 200,100)
 
@@ -32,13 +32,13 @@ local function RocketshipListener(touch)
 	if (touch.phase == "began") then
 		if (alreadyTouchedStar == false) then
 			alreadyTouchedRocketship = true
-	end	
+	end
 
 	if ( (touch.phase == "moved") and (alreadyTouchedRocketship == true) ) then
 		rocketship.x = touch.x
 		rocketship.y = touch.y
 	end
-	
+
 	if (touch.phase == "ended") then
 		alreadyTouchedRocketship = false
 		alreadyTouchedStar = false
@@ -53,13 +53,14 @@ local function StarListener(touch)
 	if (touch.phase == "began") then
 		if (alreadyTouchedRocketship == false) then
 			alreadyTouchedStar = true
-	end	
+		end
+	end
 
 	if ( (touch.phase == "moved") and (alreadyTouchedStar == true) ) then
 		rocketship.x = touch.x
 		rocketship.y = touch.y
 	end
-	
+
 	if (touch.phase == "ended") then
 		alreadyTouchedRocketship = false
 		alreadyTouchedStar = false
