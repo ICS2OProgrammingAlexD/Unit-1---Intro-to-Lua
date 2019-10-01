@@ -20,8 +20,8 @@ local ferrari = display.newImageRect ("Images/ferrari.png", 300, 100)
 ferrari.alpha = 1
 
 --set the ferrrari size to 100%
-ferrari.xScale = 0
-ferrari.yScale = 0
+ferrari.xScale = 0.01
+ferrari.yScale = 0.01
 
 -- set the intial x/y positioning of ferrari
 ferrari.x = 1000
