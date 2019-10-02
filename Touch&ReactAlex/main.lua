@@ -1,7 +1,10 @@
 -- Title: TouchAndReact
--- Name: Your Name
+-- Name: Alex De Meo
 -- Course: ICS2O/3C
--- This program 
+-- This program displays a button on-screen. when the user clicks on the button, 
+--it disapears and a different screen takes its place. the word clicked appears 
+--along with an image and a ding sound.  when user releases mouse, the orginal 
+--button reappears and the text and image dissapears.
 
 -- set background color
 display.setDefault ("background", 0.79,0.95,1.00)
@@ -9,17 +12,17 @@ display.setDefault ("background", 0.79,0.95,1.00)
 -- hide the status bar
 display.setStatusBar (display.HiddenStatusBar)
 
--- create the orange button, set position make invisible
-local orangeButton = display.newImageRect ("Images/Fast Button Active@2x.png", 150,100)
-orangeButton.x = display.contentWidth/2
-orangeButton.y = display.contentHeight/2
-orangeButton.isVisible = true
+-- create the red button, set position make invisible
+local redButton = display.newImageRect ("Images/Fast Button Active@2x.png", 150,100)
+redButton.x = display.contentWidth/2
+redButton.y = display.contentHeight/2
+redButton.isVisible = true
 
 -- create the Yelllow button, set position make invisible
-local yellowButton = display.newImageRect ("Images/Fast Button Inactive@2x.png", 150, 100)
-yellowButton.x = display.contentWidth/2
-yellowButton.y = display.contentHeight/2
-yellowButton.isVisible = false
+local blueButton = display.newImageRect ("Images/Fast Button Inactive@2x.png", 150, 100)
+blueButton.x = display.contentWidth/2
+blueButton.y = display.contentHeight/2
+blueButton.isVisible = false
 
 -- create text object, set position make invisible
 local textObject = display.newText ("Got me!", 0, 0, Arial, 50)
@@ -28,44 +31,54 @@ textObject.y = display.contentHeight/3
 textObject:setTextColor (0, 0, 0)
 textObject.isVisible = false
 
---function: OrangeButtonListener
+-- create checkmark vars
+local checkmark = display.newImageRect ("Images/checkmark.png", 150, 150)
+checkmark.x = display.contentWidth/3
+checkmark.y = display.contentHeight/2
+checkmark.isVisible = false
+
+--function: redButtonListener
 -- Input: this function accepts a touch listener
 -- output none
--- Description: when the orange button is clicked, it will make the text appear 
---with the yellow button, and make the orange button disappear
-local function OrangeButtonListener(touch)
+-- Description: when the red button is clicked, it will make the text appear 
+--with the blue button, and make the red button disappear
+local function RedButtonListener(touch)
 	if (touch.phase == "began") then
-		orangeButton.isVisible = false
-		yellowButton.isVisible = true
+		redButton.isVisible = false
+		blueButton.isVisible = true
 		textObject.isVisible = true
+		checkmark.isVisible = true
 	end
 	
 	if (touch.phase == "ended")	then
-		orangeButton.isVisible = true
-		yellowButton.isVisible = false
+		redButton.isVisible = true
+		blueButton.isVisible = false
 		textObject.isVisible = false
+		checkmark.isVisible = false
 	end	
 end
 
---function: YellowButtonListener
+--function: RedButtonListener2
 -- Input: this function accepts a touch listener
 -- output: none
--- Description:  when the yellow button is clicked, it will make the text appear 
---with the orange button, and make the yellow button disappear
---local function YellowButtonListener( touch)
---	if (touch.phase == "began") then
---		yellowButton.isVisible = false
---		orangeButton.isVisible = true
---		textObject.isVisible = true
---	end
---
---	if (touch.phase == "ended") then
---		yellowButton.isVisible = true
---		orangeButton.isVisible = false
---		textObject.isVisible = false
---	end	
---end
+-- Description:  when the blue button is clicked, it will make the text appear 
+--with the red button, and make the blue button disappear
+local function RedButtonListener2( touch)
+	if (touch.phase == "began") then
+		blueButton.isVisible = false
+		redButton.isVisible = true
+		textObject.isVisible = true
+		checkmark.isVisible = true
+	end
+
+	if (touch.phase == "ended") then
+		blueButton.isVisible = false
+		redButton.isVisible = true
+		textObject.isVisible = false
+		checkmark.isVisible = false
+	end	
+end
 
 -- add the touch listeners to the objects
-orangeButton:addEventListener("touch", OrangeButtonListener)
---yellowButton:addEventListener("touch", YellowButtonListener)
+redButton:addEventListener("touch", RedButtonListener)
+blueButton:addEventListener("touch", RedButtonListener2)
