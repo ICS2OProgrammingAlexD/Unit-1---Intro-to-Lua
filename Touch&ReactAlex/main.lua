@@ -37,6 +37,8 @@ checkmark.x = display.contentWidth/3
 checkmark.y = display.contentHeight/2
 checkmark.isVisible = false
 
+-- make the sound
+local dingSound = audio.loadSound ("Sounds/Correct Answer Sound Effect.mp3")
 --function: redButtonListener
 -- Input: this function accepts a touch listener
 -- output none
@@ -48,6 +50,7 @@ local function RedButtonListener(touch)
 		blueButton.isVisible = true
 		textObject.isVisible = true
 		checkmark.isVisible = true
+		audio.play (dingSound)
 	end
 	
 	if (touch.phase == "ended")	then
