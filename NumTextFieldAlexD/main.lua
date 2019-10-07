@@ -27,10 +27,12 @@ local correctAnswer
 local randomNumber2
 local userAnswer
 local checkmark
+local divmultiAnswer
 local red_X
 local dingSound
 local buzzSound
 local youWin
+local randomOperator
 local gameOver
 local pointsCount = 0
 local livesCount = 3
@@ -40,14 +42,49 @@ local livesCount = 3
 ----------------------------------------------------------------
 
 local function AskQuestion()
+	--pick random operator 
+	randomOperator = math.random (1, 4)
 	-- generate 2 random numbers between 1 and 20
-	randomNumber1 = math.random (1, 20)
-	randomNumber2 = math.random (1, 20)
+	randomNumber1 = math.random (1, 10)
+	randomNumber2 = math.random (1, 10)
+	-- if the operator is 1 then do addition
+	if (randomOperator == 1) then 
+		-- calculate correctAnswer
+		correctAnswer = randomNumber1 + randomNumber2
 
-	correctAnswer = randomNumber1 + randomNumber2
+		-- create the question
+		questionObject.text = randomNumber1 .. " + " .. randomNumber2 .. "="	
+		-- if randomOperator == 2 then do multiplication
+	elseif (randomOperator == 2) then 
+		--calculate correctAnswer
+		correctAnswer = randomNumber1 * randomNumber2
 
-	-- create the question
-	questionObject.text = randomNumber1 .. "+" .. randomNumber2 .. "="	
+		-- create questionObject
+		questionObject.text = randomNumber1 .. " X " .. randomNumber2 .. " ="
+	-- if randomOperator == 3 then do subteraction
+	elseif (randomOperator == 3) then 
+		-- change random numbers
+		randomNumber1 = math.random (10, 20)
+		randomNumber2 = math.random (1, 10)
+
+		-- calculate correctAnswer 
+		correctAnswer = randomNumber1 / randomNumber2
+
+		-- create question object 
+		questionObject.text = randomNumber1 .. "-" .. randomNumber2 .." ="
+		-- if randomOperator == 4
+	elseif (randomOperator == 4) then
+		-- change random operators
+		randomNumber1 = math.random (2, 10)
+		randomNumber2 = math.random (2, 10)
+
+		divmultiAnswer = randomNumber1 * randomNumber2
+
+		-- create correct answer 
+		correctAnswer = divmultiAnswer / randomNumber1
+		-- create questionObject
+		questionObject.text = divmultiAnswer .. " / " .. randomNumber1 .. "="
+	end
 end
 
 local function HideCorrectObject() 
@@ -96,9 +133,9 @@ local function NumericFieldListener( event)
 				questionObject.isVisible = false
 				audio.play (dingSound)
 			else
-				correctAnswer = tostring(correctAnswer)
 				correctObject.isVisible = true
 				checkmark.isVisible = true
+				correctObject.isVisible = false
 				audio.play (dingSound)
 				pointsCount = pointsCount + 1
 				pointsText.text = "Points: " .. pointsCount
@@ -213,4 +250,4 @@ numericField:addEventListener ("userInput", NumericFieldListener)
 -----------------------------------------------------------------
 
 --call the function to ask question
-AskQuestion(230/255, 0, 0)
+AskQuestion()
