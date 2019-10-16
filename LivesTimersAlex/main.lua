@@ -34,9 +34,18 @@ local buzzSound
 local pointsCount
 local points = 0 
 local livesCount
-local lives = 3
+local lives = 4
 local youWin
 local gameOver
+local heart1
+local heart2
+local heart3
+local heart4
+local totalSeconds = 5
+local secondsLeft = 5
+local clockText
+local countDownTimer
+
 
 -----------------------------------------------------------------
 -- local functions
@@ -105,6 +114,22 @@ local function HideRedX()
 	AskQuestion()
 end
 
+
+
+local function UpdateTime(  )
+	-- decrease the number of seconds 
+	secondsLeft = secondsLeft - 1
+
+	-- display number of seconds left 
+	clockText.text = secondsLeft .. ""
+
+	if (secondsLeft == 0) then
+		-- restart number of seconds left 
+		secondsLeft = totalSeconds
+		lives = lives - 1 
+	end
+end
+
 local function NumericFieldListener( event )
 
 	-- User begins editing numeric field
@@ -143,10 +168,8 @@ local function NumericFieldListener( event )
 				numericField.isVisible = false
 				questionObject.isVisible = false
 				pointsCount.isVisible = false
-				livesCount.isVisible = false
 			else
-				lives = lives - 1 
-				livesCount.text = "Lives Remaining: " .. lives 
+				lives = lives - 1
 				incorrectObject.text = "         Not Quite, \n the right answer is " .. correctAnswer
 				incorrectObject.isVisible = true
 				redX.isVisible = true
@@ -157,6 +180,18 @@ local function NumericFieldListener( event )
 			end	
 		end
 	end 	
+end
+
+local function UpdateHearts(  )
+	if (lives == 3) then 
+		heart1.isVisible = false
+	elseif (lives == 2) then
+		heart2.isVisible = false
+	elseif (lives == 1) then
+		heart3.isVisible = false
+	elseif (lives == 0) then 
+		heart4.isVisible = false
+	end
 end
 
 --------------------------------------------------------------------
@@ -195,6 +230,26 @@ dingSound = audio.loadSound ("Sounds/Correct Answer Sound Effect.mp3")
 --create audio for incorrect object 
 buzzSound = audio.loadSound ("Sounds/Wrong Buzzer Sound Effect.mp3")
 
+-- create heart1
+heart1 = display.newImageRect("Images/heart.png", 150, 150)
+heart1.x = 900
+heart1.y = 100
+
+--create heart2 
+heart2 = display.newImageRect("Images/heart.png", 150, 150)
+heart2.x = 740
+heart2.y = 100
+
+--create heart3
+heart3 = display.newImageRect("Images/heart.png", 150, 150)
+heart3.x = 580
+heart3.y = 100
+
+-- create heart4
+heart4 = display.newImageRect("Images/heart.png", 150, 150)
+heart4.x = 420
+heart4.y = 100
+
 -- create YouWin Image
 youWin = display.newImageRect ("Images/You Win.png", 1000, 500)
 youWin.x = display.contentWidth/2
@@ -210,10 +265,6 @@ gameOver.isVisible = false
 -- create the points counter
 pointsCount = display.newText ("Points: " .. points, 100, 100, nil, 40)
 pointsCount:setTextColor (0, 0, 0)
-
--- create the lives counter
-livesCount = display.newText ("Lives Remaining: " .. lives, 191, 150, nil, 40)
-livesCount:setTextColor (0, 0, 0)
 
 -- create numeric field
 numericField = native.newTextField (display.contentWidth/2, display.contentHeight/2, 150, 80)
