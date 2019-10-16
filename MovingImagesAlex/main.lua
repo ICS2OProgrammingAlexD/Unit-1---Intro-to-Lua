@@ -9,6 +9,20 @@ display.setStatusBar (display.HiddenStatusBar)
 -- Global Variables
 scrollSpeed = 6 - 14
 
+-- Create the backrgound music
+local backgroundMusic = audio.loadStream("Sounds/bkgMusic.mp3")
+local backgroundMusicChannel
+
+-- Function: PlayMusic
+-- Input: accepts event listener
+-- Output: none
+-- Description; Function plays 
+local function PlayMusic( )
+	backgroundMusicChannel = audio.play(backgroundMusic, {loops= -1})
+end
+
+
+-----------------------------------------------------------
 -- First Character
 -- background Image with width and height
 local backgroundImage = display.newImageRect ("Images/background.png", 2048, 1536)
@@ -39,6 +53,16 @@ local function MoveShip (event)
 	-- Change the size of the ferrari to get bigger
 	ferrari.xScale = ferrari.xScale + 0.01
 	ferrari.yScale = ferrari.yScale + 0.01
+	if ((ferrari.xScale) and (ferrari.yScale) > 2) then
+		ferrari.xScale = -2
+		ferrari.yScale = -2
+	end 
+	if (ferrari.alpha == 0) then
+		ferrari.alpha = 1
+	end
+	if (ferrari.x < 0) then
+		ferrari.x = 1024 + scrollSpeed
+	end
 end
 
 -- MoveShip will be called over and over again
@@ -74,9 +98,18 @@ local function MoveCar(event)
 	--change the transparency of the f1 car after every time it moves so that it fades out.
 	f1.alpha = f1.alpha + 0.01
 	--Change the size of the f1 car
-	f1.xScale = f1.xScale - 0.03
-	f1.yScale = f1.yScale - 0.03
+	f1.xScale = f1.xScale - 0.01
+	f1.yScale = f1.yScale - 0.01
+	if ((f1.xScale) and (f1.yScale) < -2) then
+		f1.xScale = 2
+		f1.yScale = 2
+	end
+	if (f1.x > 1024) then
+		f1.x = 0 + scrollSpeed2
+	end
 end
 
 --MoveCar will be called over and over again
 Runtime:addEventListener ("enterFrame", MoveCar)
+
+PlayMusic()
