@@ -41,11 +41,14 @@ local heart1
 local heart2
 local heart3
 local heart4
-local totalSeconds = 5
-local secondsLeft = 5
+local totalSeconds = 11
+local secondsLeft = 10
 local clockText
 local countDownTimer
-
+local youWinMusic = audio.loadStream ("Sounds/formula-1-theme-song.mp3")
+local youWinMusicChannel
+local gameOverMusic = audio.loadStream("Sounds/Effect Womp Womp Womp.mp3")
+local gameOverMusicChannel
 
 -----------------------------------------------------------------
 -- local functions
@@ -99,6 +102,14 @@ local function HideCorrect()
 	AskQuestion()
 end
 
+local function PlayYouWinMusic(  )
+	youWinMusicChannel = audio.play (youWinMusic, {loops= -1})
+end
+
+local function PlayGameOverMusic(  )
+	gameOverMusicChannel = audio.play (gameOverMusic, {loops= 1})
+end
+
 local function HideCheckmark()
 	checkmark.isVisible = false
 	AskQuestion()
@@ -127,7 +138,37 @@ local function UpdateTime(  )
 		-- restart number of seconds left 
 		secondsLeft = totalSeconds
 		lives = lives - 1 
+
+		-- If no lives left, play a game over sound,
+		-- show a Game over Image, nd cancel the timer , 
+		-- remove hearts
+
+		if ( lives == 3 ) then
+			heart4.isVisible = false
+			audio.play(buzzSound)
+		elseif (lives == 2) then
+			heart3.isVisible = false
+			audio.play(buzzSound)
+		elseif (lives == 1) then
+			heart2.isVisible = false
+			audio.play(buzzSound)			
+		elseif (lives == 0) then
+			heart1.isVisible = false
+			gameOver.isVisible = true
+			pointsCount.isVisible = false
+			numericField.isVisible = false
+			clockText.isVisible = false
+			questionObject.isVisible = false
+			PlayGameOverMusic()
+		end
+	
 	end
+
+end
+
+local function StartTimer()
+	-- create a countDownTimer that loops infinitly
+	countDownTimer = timer.performWithDelay(1000, UpdateTime, 0)
 end
 
 local function NumericFieldListener( event )
@@ -146,11 +187,16 @@ local function NumericFieldListener( event )
 		if  (userAnswer == correctAnswer) then
 			if (points == 4) then
 				youWin.isVisible = true
-				audio.play (dingSound)
 				numericField.isVisible = false
 				questionObject.isVisible = false
 				pointsCount.isVisible = false
-				livesCount.isVisible = false
+				timer.cancel(countDownTimer)
+				clockText.isVisible = false
+				heart1.isVisible = false
+				heart2.isVisible = false
+				heart3.isVisible = false
+				heart4.isVisible = false
+				PlayYouWinMusic()
 			else
 				points = points + 1 
 				pointsCount.text = "Points: " .. points
@@ -160,38 +206,48 @@ local function NumericFieldListener( event )
 				timer.performWithDelay (2000, HideCheckmark)
 				timer.performWithDelay (2000, HideCorrect)
 				event.target.text = ""
+				secondsLeft = totalSeconds
 			end 
 		else
-			if (lives == 0) then
-				gameOver.isVisible = true
-				audio.play (buzzSound)
-				numericField.isVisible = false
-				questionObject.isVisible = false
-				pointsCount.isVisible = false
-			else
-				lives = lives - 1
+			lives = lives - 1
+			if (lives == 3 ) then
+				heart4.isVisible = false
 				incorrectObject.text = "         Not Quite, \n the right answer is " .. correctAnswer
 				incorrectObject.isVisible = true
 				redX.isVisible = true
-				audio.play (buzzSound)
 				timer.performWithDelay (2000, HideIncorrect)
 				timer.performWithDelay (2000, HideRedX)
-				event.target.text = ""
-			end	
+			elseif (lives == 2) then
+				heart3.isVisible = false
+				incorrectObject.text = "         Not Quite, \n the right answer is " .. correctAnswer
+				incorrectObject.isVisible = true
+				redX.isVisible = true
+				timer.performWithDelay (2000, HideIncorrect)
+				timer.performWithDelay (2000, HideRedX)
+			elseif (lives == 1) then
+				heart2.isVisible = false
+				incorrectObject.text = "         Not Quite, \n the right answer is " .. correctAnswer
+				incorrectObject.isVisible = true
+				redX.isVisible = true
+				timer.performWithDelay (2000, HideIncorrect)
+				timer.performWithDelay (2000, HideRedX)
+			elseif (lives == 0) then
+				heart1.isVisible = false
+				gameOver.isVisible = true
+				numericField.isVisible = false
+				questionObject.isVisible = false
+				pointsCount.isVisible = false
+				timer.cancel(countDownTimer)
+				clockText.isVisible = false
+				PlayGameOverMusic()
+			end
+			event.target.text = ""
+			secondsLeft = totalSeconds
+			
+
+		
 		end
 	end 	
-end
-
-local function UpdateHearts(  )
-	if (lives == 3) then 
-		heart1.isVisible = false
-	elseif (lives == 2) then
-		heart2.isVisible = false
-	elseif (lives == 1) then
-		heart3.isVisible = false
-	elseif (lives == 0) then 
-		heart4.isVisible = false
-	end
 end
 
 --------------------------------------------------------------------
@@ -234,21 +290,25 @@ buzzSound = audio.loadSound ("Sounds/Wrong Buzzer Sound Effect.mp3")
 heart1 = display.newImageRect("Images/heart.png", 150, 150)
 heart1.x = 900
 heart1.y = 100
+heart1.isVisible = true
 
 --create heart2 
 heart2 = display.newImageRect("Images/heart.png", 150, 150)
 heart2.x = 740
 heart2.y = 100
+heart2.isVisible = true
 
 --create heart3
 heart3 = display.newImageRect("Images/heart.png", 150, 150)
 heart3.x = 580
 heart3.y = 100
+heart3.isVisible = true
 
 -- create heart4
 heart4 = display.newImageRect("Images/heart.png", 150, 150)
 heart4.x = 420
 heart4.y = 100
+heart4.isVisible = true
 
 -- create YouWin Image
 youWin = display.newImageRect ("Images/You Win.png", 1000, 500)
@@ -270,6 +330,11 @@ pointsCount:setTextColor (0, 0, 0)
 numericField = native.newTextField (display.contentWidth/2, display.contentHeight/2, 150, 80)
 numericField.inputType = "number"
 
+-- create clockText
+clockText = display.newText(secondsLeft .. "", 150, 600, nil, 200)
+clockText:setTextColor(0, 0, 0)
+clockText.isVisible = true
+
 -- add the event listener for numeric field
 numericField:addEventListener ("userInput", NumericFieldListener)
 
@@ -279,3 +344,4 @@ numericField:addEventListener ("userInput", NumericFieldListener)
 
 -- call the function to ask question
 AskQuestion()
+StartTimer()
