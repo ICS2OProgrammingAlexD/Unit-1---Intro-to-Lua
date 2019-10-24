@@ -6,7 +6,7 @@
 --says correct, otherwise the program says incorrect. then it asks 
 --the user another random addition question
 
-		-- hide the status bar 
+-- hide the status bar 
 display.setStatusBar (display.HiddenStatusBar)
 
 -- set background color
@@ -215,7 +215,6 @@ local function NumericFieldListener( event )
 				incorrectObject.text = "         Not Quite, \n the right answer is " .. correctAnswer
 				incorrectObject.isVisible = true
 				redX.isVisible = true
-				audio.play(buzzSound)
 				timer.performWithDelay (2000, HideIncorrect)
 				timer.performWithDelay (2000, HideRedX)
 			elseif (lives == 2) then
@@ -223,7 +222,6 @@ local function NumericFieldListener( event )
 				incorrectObject.text = "         Not Quite, \n the right answer is " .. correctAnswer
 				incorrectObject.isVisible = true
 				redX.isVisible = true
-				audio.play(buzzSound)
 				timer.performWithDelay (2000, HideIncorrect)
 				timer.performWithDelay (2000, HideRedX)
 			elseif (lives == 1) then
@@ -231,7 +229,6 @@ local function NumericFieldListener( event )
 				incorrectObject.text = "         Not Quite, \n the right answer is " .. correctAnswer
 				incorrectObject.isVisible = true
 				redX.isVisible = true
-				audio.play(buzzSound)
 				timer.performWithDelay (2000, HideIncorrect)
 				timer.performWithDelay (2000, HideRedX)
 			elseif (lives == 0) then
